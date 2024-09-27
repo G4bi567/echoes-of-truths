@@ -1,14 +1,6 @@
-const canvas = document.getElementById('gameCanvas');
-const context = canvas.getContext('2d');
-
-canvas.width = 800;
-canvas.height = 600;
-
-function gameLoop() {
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    // Game logic and rendering go here
-    
-    requestAnimationFrame(gameLoop);
-}
-
-gameLoop();
+document.getElementById('start-button').addEventListener('click', () => {
+    // Cacher la page d'ouverture
+    document.getElementById('opening-page').style.display = 'none';
+    // Afficher le contenu du jeu
+    document.getElementById('game-content').style.display = 'block';
+});
