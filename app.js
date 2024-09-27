@@ -17,6 +17,7 @@ function closeCustomAlert() {
 
 // Déclarations des variables globales
 let gameState = {
+    // flags ou notes
     visitedLocations: {},
     accused: null,
     knownSuspects: [], // Ajouter cette ligne
@@ -68,6 +69,8 @@ function checkAccusation(suspect) {
     } else {
         alert("Désolé, ce n'est pas le bon coupable. Vous êtes un mauvais détective.");
         // Recharger la page pour réinitialiser le jeu
-        window.location.reload();
+        setTimeout(function() {
+            window.location.reload();
+        }, 3000); // 3000 millisecondes = 3 secondesw
     }
 };
