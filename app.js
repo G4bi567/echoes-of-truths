@@ -48,5 +48,16 @@ function accuseSuspect() {
     if (suspect) {
         checkAccusation(suspect);
     }
-}
+};
 
+// Fonction pour vérifier si l'accusation est correcte
+function checkAccusation(suspect) {
+    const culprit = 'choisie';
+    if (suspect === culprit) {
+        alert("Félicitations ! Vous avez trouvé le véritable coupable : .");
+    } else {
+        alert("Désolé, ce n'est pas le bon coupable. Vous êtes un mauvais détective.");
+        // Recharger la page pour réinitialiser le jeu
+        window.location.reload();
+    }
+};
