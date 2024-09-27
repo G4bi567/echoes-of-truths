@@ -5,6 +5,16 @@ document.getElementById('start-button').addEventListener('click', () => {
     document.getElementById('game-content').style.display = 'block';
 });
 
+function showCustomAlert(title, message) {
+    document.getElementById('alert-title').innerText = title;
+    document.getElementById('alert-message').innerText = message;
+    document.getElementById('custom-alert').style.display = 'block';
+}
+
+function closeCustomAlert() {
+    document.getElementById('custom-alert').style.display = 'none';
+}
+
 // Déclarations des variables globales
 let gameState = {
     visitedLocations: {},
@@ -38,7 +48,7 @@ function startDialogue(locationId) {
 // Fonction pour accuser un suspect
 function accuseSuspect() {
     if (gameState.knownSuspects.length === 0) {
-        alert("Vous n'avez encore rencontré personne à accuser.");
+        showCustomAlert("Erreur", "Vous n'avez encore rencontré personne à accuser.");
         return;
     }
 

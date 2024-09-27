@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Echos of thruths</title>
-    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
     <!-- Page d'ouverture -->
@@ -14,6 +14,14 @@
 
     <!-- Contenu du jeu (initialement caché) -->
     <div id="game-content" style="display: none;">
+        <div id="custom-alert" class="custom-alert" style="display:none;">
+            <div class="custom-alert-box">
+                <h2 id="alert-title">Titre personnalisé</h2>
+                <p id="alert-message">Ceci est un message d'alerte personnalisé.</p>
+                <button onclick="closeCustomAlert()">OK</button>
+            </div>
+        </div>
+
         <div id="game">
             <!--<img src="carte_ville.jpg" alt="Carte de la ville" id="city-map"> -->
 
