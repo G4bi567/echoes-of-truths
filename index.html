@@ -1,16 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Game</title>
-    <style>
-        /* Your CSS can go here */
-    </style>
+    <title>Echos of thruths</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
 </head>
 <body>
-    <h1>Welcome to My Game</h1>
-    <canvas id="gameCanvas"></canvas>
+    <!-- Page d'ouverture -->
+    <div id="opening-page">
+        <p>Incarnez Alex Dupont, un détective privé renommé, et résolvez le mystère du meurtre de Marie Lambert. Explorez la ville de Luménia, interrogez les suspects, collectez des indices, et découvrez la vérité.</p>
+        <button id="start-button">Commencer le jeu</button>
+    </div>
+
+    <!-- Contenu du jeu (initialement caché) -->
+    <div id="game-content" style="display: none;">
+        <div id="game">
+            <!--<img src="carte_ville.jpg" alt="Carte de la ville" id="city-map"> -->
+
+            <!-- Zones cliquables sur la carte -->
+            <div class="location" id="cinema">Cinéma</div>
+            <div class="location" id="cafe">Café</div>
+            <div class="location" id="cybercafe">Cybercafé</div>
+            <div class="location" id="hotel">Hôtel</div>
+            <div class="location" id="place">Place</div>
+            <div class="location" id="journal">Journal</div>
+            <div class="location" id="police">Poste de Police</div>
+        </div>
+        <!-- Zone de dialogue -->
+        <div id="dialogue-box">
+            <div id="dialogue-content"></div>
+            <div id="choices"></div>
+        </div>
+    </div>
+
+    <!-- Script JavaScript -->
     <script src="app.js"></script>
 </body>
 </html>
