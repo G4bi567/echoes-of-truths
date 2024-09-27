@@ -22,3 +22,19 @@
 .custom-alert-box h2 {
     margin: 0 0 10px;
 }
+
+.location {
+  position: absolute;
+  cursor: pointer;
+}
+
+#opening-page {
+  /* Ajoutez cette propriété pour une transition en fondu */
+  opacity: 1;
+  transition: opacity 1s;
+}
+
+#opening-page.hidden {
+  opacity: 0;
+  display: none;
+}
