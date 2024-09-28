@@ -3,10 +3,10 @@ document.getElementById('start-button').addEventListener('click', () => {
     document.getElementById('opening-page').style.display = 'none';
     
     // Afficher le dialogue d'intro avec le policier
-    //startByPolice();
+    startByPolice();
     
     // Afficher le contenu du jeu
-    document.getElementById('game-content').style.display = 'block';
+    //document.getElementById('game-content').style.display = 'block';
 });
 
 
@@ -201,30 +201,57 @@ function startDialogue(locationId) {
 }
 
 function displayQuestions(locationId) {
+    const dialogueBox = document.getElementById('dialogue-box');
+    const dialogueContent = document.getElementById('dialogue-content');
+    const choices = document.getElementById('choices');
 
+    dialogueContent.innerHTML = '';
+    choices.innerHTML = '';
+
+    
 
     const hasAskedInitialQuestion = gameState.completedDialogues[locationId].includes(0);
 
     const locationDialogues = dialogues[locationId].dialogues.filter(dialogue => {
-        // If the initial question hasn't been asked, only show the id: 0 question
         if (!hasAskedInitialQuestion) {
             return dialogue.id === 0;
         }
-        // Otherwise, show all available dialogues that haven't been completed
-        return !gameStatecompletedDialogues[locationId].includes(dialogue.id) && (!dialogue.condition || dialogue.condition());
+        return !gameState.completedDialogues[locationId].includes(dialogue.id) && (!dialogue.condition || dialogue.condition());
     });
 
-
     if (locationDialogues.length === 0) {
-        console.log(`La conversation est terminée avec ${dialogues[locationId].name}.`);
+        dialogueContent.innerHTML = `<p>La conversation est terminée avec ${dialogues[locationId].name}.</p>`;
+        const endButton = document.createElement('button');
+        endButton.innerText = "Terminer la conversation";
+        endButton.addEventListener('click', closeDialogue);
+        choices.appendChild(endButton);
         return;
     }
 
-    console.log(`Choisissez une question à poser à ${dialogues[locationId].name}:`);
-    locationDialogues.forEach(dialogue => {
-        console.log(`${dialogue.id}: ${dialogue.text}`);
-    });
-    console.log("99: Terminer la conversation");
+    if (locationId == "police") {
+        console.log(dialogues[locationId].dialogue);
+        locationDialogues.forEach(dialogue => {
+            console.log(`${dialogue.id}: ${dialogue.text}`);
+            console.log(`Vous: ${dialogue.responses.text}`)
+            const button = document.createElement('button');
+            button.innerText = dialogue.text;
+        });
+    }
+    else {
+        dialogueContent.innerHTML = `<p>Choisissez une question à poser à ${dialogues[locationId].name} :</p>`;
+
+        console.log(`Choisissez une question à poser à ${dialogues[locationId].name}:`);
+        locationDialogues.forEach(dialogue => {
+            console.log(`${dialogue.id}: ${dialogue.text}`);
+            const button = document.createElement('button');
+            button.innerText = dialogue.text;
+        });
+        console.log("99: Terminer la conversation");
+    }
+}
+
+function askQuestion(location, id) {
+    
 }
 
 function showDialogue(locationId) {
@@ -237,7 +264,14 @@ function showDialogue(locationId) {
 
 
     // Afficher le texte du dialogue
-    dialogueContent.innerHTML = `<p><strong>Vous :</strong> ${dialogue.text}</p>`;
+    if (location = "police") {
+        dialogueContent.innerHTML = `<p><strong>Gordon :</strong> ${dialogue.text}</p>`;
+    } else if (location = "cinema") {
+        dialogueContent.innerHTML = `<p><strong>Esmeralda :</strong> ${dialogue.text}</p>`;
+    }
+    else {
+        dialogueContent.innerHTML = `<p><strong>Vous :</strong> ${dialogue.text}</p>`;
+    }    
     choices.innerHTML = '';
     console.log("hello")
     dialogue.responses.forEach((response, index) => {
@@ -291,7 +325,7 @@ function checkAccusation(suspect) {
 
 function startByPolice() {
     // Affiche le dialogue d'intro avec le policier
-    startDialogue("police");
+    displayQuestions("police");
 };
 
 function showCharacter() {
