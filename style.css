@@ -58,16 +58,23 @@
     z-index: -1;
 }
 
-/* Game Content Styling (background will change on game start) */
+
+/* Ensure the game content covers the entire screen without scrollbars */
 #game-content {
-    width: 100vw; /* Full width of the viewport */
-    height: 100vh; /* Full height of the viewport */
-    background-color: black; /* Fallback color in case the image doesn't load */
-    background-size: cover; /* Ensures the background image covers the full area */
-    background-position: center; /* Centers the background image */
-    background-repeat: no-repeat; /* Prevents background from repeating */
-    position: relative; /* Ensures content within is positioned relative to the background */
-    z-index: 1; /* Keeps content above the background */
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    background-size: cover; /* Ensure the image covers the entire area */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent background from repeating */
+    overflow: hidden; /* Prevent scrollbars */
+}
+
+/* Body and html should also take up the full screen to avoid scrolling */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* Hide overflow to avoid scrollbars */
 }
 
 /* Dialogue Box Styling */
@@ -173,4 +180,90 @@
     font-weight: bold;
     font-size: 24px;
     margin-left: 10px; /* Space between the location name and the ! */ 
+}
+/* Character container styles */
+#character-container {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    z-index: 2;
+}
+
+/* Konan is always on the left, flipped horizontally */
+#konan {
+    max-height: 80vh;
+    width: auto;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    transform: scaleX(-1); /* Flip horizontally */
+}
+
+/* Location character is on the right */
+.character {
+    max-height: 80vh;
+    width: auto;
+    position: absolute;
+    bottom: 0;
+}
+
+.character.right {
+    right: 0;
+}
+
+
+/* Custom Prompt Styling */
+.custom-prompt {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.custom-prompt-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    width: 400px;
+}
+
+.custom-prompt-box h2 {
+    margin: 0 0 10px;
+    font-size: 24px;
+}
+
+.custom-prompt-box input {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.prompt-buttons button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+}
+
+.prompt-buttons button:hover {
+    background-color: #0056b3;
 }

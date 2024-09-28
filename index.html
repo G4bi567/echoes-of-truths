@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Echos of thruths</title>
+    <title>Echoes of thruths</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
@@ -27,33 +27,52 @@
             </div>
         </div>
 
+                <!-- Custom Accusation Prompt -->
+        <div id="custom-prompt" class="custom-prompt" style="display:none;">
+            <div class="custom-prompt-box">
+                <h2>Accuser un suspect</h2>
+                <p>Qui voulez-vous accuser ?</p>
+                <input type="text" id="suspect-input" placeholder="Entrez le nom du suspect" />
+                <div class="prompt-buttons">
+                    <button id="accuse-button">Accuser</button>
+                    <button id="cancel-button">Annuler</button>
+                </div>
+            </div>
+        </div>
+
+
         <div id="game">
             <!-- Zones cliquables sur la carte -->
-            <div class="location" id="cinema" style="top: 60%; left: 35%;">Cinéma
+            <div class="location" id="cinema" style="top: 60%; left: 33%;">Cinéma
                 <span class="exclamation-mark" id="cinema-alert">!</span>
             </div>
             
-            <div class="location" id="bar" style="top: 40%; left: 50%;">Bar
+            <div class="location" id="bar" style="top: 53%; left: 11%;">Bar
                 <span class="exclamation-mark" id="bar-alert">!</span>
             </div>
             
-            <div class="location" id="cybercafe" style="top: 60%; left: 40%;">Cybercafé
+            <div class="location" id="cybercafe" style="top: 56%; left: 90%;">Cybercafé
                 <span class="exclamation-mark" id="cybercafe-alert">!</span>
             </div>
             
-            <div class="location" id="hotel" style="top: 50%; left: 70%;">Hôtel
+            <div class="location" id="hotel" style="top: 60%; left: 50%;">Hôtel
                 <span class="exclamation-mark" id="hotel-alert">!</span>
             </div>
             
-            <div class="location" id="library" style="top: 30%; left: 60%;">Librairie
+            <div class="location" id="library" style="top: 50%; left: 75%;">Librairie
                 <span class="exclamation-mark" id="library-alert">!</span>
             </div>
             
-            <div class="location" id="journal" style="top: 70%; left: 20%;">Journal
+            <div class="location" id="journal" style="top: 55%; left: 20%;">Journal
                 <span class="exclamation-mark" id="journal-alert">!</span>
             </div>
             
-            <div class="location" id="police" style="top: 80%; left: 75%; background-color: rgba(0, 0, 255, 0.7);">Poste de Police</div>
+            <div class="location" id="police" style="top: 80%; left: 75%; background-color: rgba(0, 0, 255, 0.7); color: whitesmoke;">Poste de Police</div>
+        </div>
+
+        <div id="character-container" style="display: none;">
+            <img id="konan" src="Sprites/Characters/konan.png" alt="Konan">
+            <img id="location-character" class="character right" src="" alt="Other Character" style="display: none;">
         </div>
 
         <!-- Zone de dialogue -->

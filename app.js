@@ -27,6 +27,15 @@ const locationBackgrounds = {
     journal: 'Sprites/Background/journal_background.webp'
 };
 
+const locationCharacters = {
+    cinema: 'Sprites/Characters/esmeralda.png',
+    bar: 'Sprites/Characters/pedro.png',
+    cybercafe: 'Sprites/Characters/sophie.png',
+    hotel: 'Sprites/Characters/polnareff.png',
+    library: 'Sprites/Characters/ingrid.png',
+    journal: 'Sprites/Characters/philibert.png'
+};
+
 
 const cityBackground = 'Sprites/Background/city_background.png';
 
@@ -362,11 +371,10 @@ let dialogues = {
             {
                 id: 3,
                 text: "Avez-vous remarqué quelqu'un de suspect récemment ?",
-                condition: () => hasNote("cybercafe", "Un homme mystérieux a été vu au cybercafé"),
+                condition: () => hasNote("cinema", "Un homme mystérieux suit Pauline."),
                 responses: [
                     {
                         text: "Il y avait un homme qui venait souvent, sans utiliser les ordinateurs. Grand, manteau sombre. Il semblait observer les clients.",
-                        action: () => addNote("cybercafe", "L'homme au grand manteau."),
                         next: null,
                     }
                 ]
@@ -430,6 +438,29 @@ locations.forEach(location => {
     });
 });
 
+// Show Konan and the location character based on the locationId
+function showCharacters(locationId) {
+    // Show Konan (always visible in conversations)
+    document.getElementById('character-container').style.display = 'flex';
+    document.getElementById('konan').style.display = 'block';
+    
+    // Show the other character based on the location
+    const locationCharacter = locationCharacters[locationId];
+    if (locationCharacter) {
+        document.getElementById('location-character').src = locationCharacter;
+        document.getElementById('location-character').style.display = 'block';
+    } else {
+        document.getElementById('location-character').style.display = 'none'; // Hide if no character for location
+    }
+}
+
+// Hide all characters (for menus or transitions)
+function hideCharacters() {
+    document.getElementById('character-container').style.display = 'none';
+    document.getElementById('konan').style.display = 'none';
+    document.getElementById('location-character').style.display = 'none';
+}
+
 
 // Fonction pour démarrer un dialogue
 function startDialogue(locationId) {
@@ -441,6 +472,7 @@ function startDialogue(locationId) {
 
     // Hide all locations while in dialogue mode
     hideLocations();
+    showCharacters(locationId); 
 
     // Ajouter le suspect à la liste des suspects connus
     const personDialogue = location.name
@@ -457,6 +489,7 @@ function displayDialogues(locationId) {
     const dialogueBox = document.getElementById('dialogue-box');
     const dialogueContent = document.getElementById('dialogue-content');
     const choices = document.getElementById('choices');
+    
 
     dialogueContent.innerHTML = '';
     choices.innerHTML = '';
@@ -612,6 +645,8 @@ function closeDialogue() {
     showLocations();
 
     updateExclamationMarks();
+
+    hideCharacters();
 }
 
 
