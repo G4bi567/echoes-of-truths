@@ -184,37 +184,44 @@ html, body {
 /* Character container styles */
 #character-container {
     position: absolute;
-    bottom: 10px;
-    left: 10px;
+    bottom: 0px;
+    left: 0px;
     width: 100%;
-    height: 300px;
+    height: 600px; /* Increased height */
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     z-index: 2;
+    margin: 0; /* Ensure no margin around the container */
+    padding: 0; /* Remove any padding */
 }
 
 /* Konan is always on the left, flipped horizontally */
 #konan {
-    max-height: 80vh;
+    max-height: 90vh; /* Increased the height */
     width: auto;
     position: absolute;
     left: 0;
     bottom: 0;
     transform: scaleX(-1); /* Flip horizontally */
+    margin: 0; /* Remove any margin */
+    padding: 0; /* Remove any padding */
 }
 
 /* Location character is on the right */
 .character {
-    max-height: 80vh;
+    max-height: 90vh; /* Increased the height */
     width: auto;
     position: absolute;
     bottom: 0;
+    margin: 0; /* Remove any margin */
+    padding: 0; /* Remove any padding */
 }
 
 .character.right {
     right: 0;
 }
+
 
 
 /* Custom Prompt Styling */

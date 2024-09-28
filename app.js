@@ -149,7 +149,6 @@ let dialogues = {
                 responses: [
                     {
                         text: "Elle était stressée, mais aussi déterminée. Elle travaillait sur une grande enquête. Elle disait que c'était dangereux, mais qu'elle ne pouvait pas abandonner.",
-                        action: () => addNote("cinema", "Pauline enquêtait sur une association secrète de censure."),
                         next: 2,
                     }
                 ]
