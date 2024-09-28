@@ -1,5 +1,11 @@
 document.getElementById('start-button').addEventListener('click', () => {
+
+    // Ensure the audio element is loaded and ready before trying to control it
+    const audioElement = document.getElementById("audio");
+    audioElement.volume = 1; // Set the volume to 100%
+    audioElement.play(); // 
     // Hide the opening page
+
     document.getElementById('opening-page').style.display = 'none';
     
     // Hide the video background
