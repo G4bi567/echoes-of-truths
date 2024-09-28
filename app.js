@@ -50,9 +50,14 @@ const dialogues = {
         dialogues: [
             {
                 id: 0,
-                text: "",
+                text: "Konan, nous avons besoin de vos talents. Pauline Geanne, une journaliste respectée, a été retrouvée morte à l'hôtel 'Les Étoiles'. Elle travaillait sur une enquête sensible concernant une association secrète de censure. De plus, le cybercafé 'Le Nexus' a été piraté récemment, et nous pensons que c'est lié. Votre mission est de découvrir la vérité et d'identifier le coupable.",
                 condition: () => true,
-                responses: []
+                responses: [
+                    {
+                        text: "",
+                        next: 1,
+                    }
+                ]
             }
         ]
     },
@@ -176,8 +181,8 @@ function startDialogue(locationId) {
     showDialogue(locationId);
 }
 
-function displayQuestions() {
-    const availableDialogues = dialogues.cinema.dialogues.filter(dialogue => !completedDialogues.includes(dialogue.id));
+function displayQuestions(locationId) {
+    const availableDialogues = dialogues[locationId].dialogues.filter(dialogue => !completedDialogues.includes(dialogue.id));
 
     if (availableDialogues.length === 0) {
         console.log("La conversation est terminée.");
