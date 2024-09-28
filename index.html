@@ -12,6 +12,11 @@
         <button id="start-button">Commencer le jeu</button>
     </div>
 
+    <video class="video-background" autoplay loop muted>
+    <source src="Sprites/Background/menu.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+    </video>
+
     <!-- Contenu du jeu (initialement caché) -->
     <div id="game-content" style="display: none;">
         <div id="custom-alert" class="custom-alert" style="display:none;">
@@ -34,7 +39,7 @@
         </div>
 
         <!-- Zone de dialogue -->
-        <div id="dialogue-box">
+        <div id="dialogue-box" style="color: white;">
             <div id="dialogue-content"></div>
             <div id="choices"></div>
         </div> 

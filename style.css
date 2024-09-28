@@ -1,4 +1,4 @@
-
+/* Custom Alert Styling */
 .custom-alert {
     position: fixed;
     top: 0;
@@ -9,6 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 100;
 }
 
 .custom-alert-box {
@@ -16,25 +17,56 @@
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    width: 400px;
 }
 
 .custom-alert-box h2 {
     margin: 0 0 10px;
+    font-size: 24px;
 }
 
+/* Location Styling */
 .location {
-  position: absolute;
-  cursor: pointer;
+    position: absolute;
+    cursor: pointer;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px solid #000;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-#opening-page {
-  /* Ajoutez cette propriété pour une transition en fondu */
-  opacity: 1;
-  transition: opacity 1s;
+/* Add hover effects */
+.location:hover {
+    background-color: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-#opening-page.hidden {
-  opacity: 0;
-  display: none;
+/* Video Background */
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
 }
+
+/* Game Content Styling (background will change on game start) */
+#game-content {
+    width: 100vw; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+    background-color: black; /* Fallback color in case the image doesn't load */
+    background-size: cover; /* Ensures the background image covers the full area */
+    background-position: center; /* Centers the background image */
+    background-repeat: no-repeat; /* Prevents background from repeating */
+    position: relative; /* Ensures content within is positioned relative to the background */
+    z-index: 1; /* Keeps content above the background */
+}
+

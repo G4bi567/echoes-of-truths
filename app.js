@@ -1,14 +1,29 @@
 document.getElementById('start-button').addEventListener('click', () => {
-    // Cacher la page d'ouverture
+    // Hide the opening page
     document.getElementById('opening-page').style.display = 'none';
     
-    // Afficher le dialogue d'intro avec le policier
-    startByPolice();
+    // Hide the video background
+    document.querySelector('.video-background').style.display = 'none';
     
-    // Afficher le contenu du jeu
+    // Change the background of the game content to the city image
+    document.getElementById('game-content').style.backgroundImage = "url('Sprites/Background/city_background.png')";
+    document.getElementById('game-content').style.backgroundSize = "cover";
+    document.getElementById('game-content').style.backgroundPosition = "center";
+
+    // Display the game content
     document.getElementById('game-content').style.display = 'block';
+
+    // Start the police dialogue
+    startByPolice();
 });
 
+
+
+
+const video = document.querySelector('.video-background');
+
+// Play the video
+video.play();
 
 function showCustomAlert(title, message) {
     document.getElementById('alert-title').innerText = title;
@@ -166,9 +181,10 @@ let dialogues = {
             {
                 id: 3,
                 text: "Avez-vous remarqué quelqu'un la suivre ou s'intéresser à elle ici ?",
+                condition: () => hasNote("cinema", "Un homme mystérieux suit Pauline"),
                 responses: [
                     {
-                        text: "Non, je n'ai rien remarqué de tel.",
+                        text: "(Anxieuse) Non, je n'ai rien remarqué de tel.",
                         next: null,
                     }
                 ]
@@ -181,39 +197,41 @@ let dialogues = {
         dialogues: [
             {
                 id: 0,
-                text: "Bonjour, que puis-je vous servir ?",
+                text: "Bonjour, un café s'il vous plaît.",
                 responses: [
                     {
-                        text: "Un café, s'il vous plaît.",
-                        next: 1,
-                    },
-                    {
-                        text: "Pedro ? Je suis Konan, détective privé. J'ai quelques questions sur Pauline Geanne.",
+                        text: "Voilà. Vous êtes nouveau en ville ?",
                         next: 1,
                     }
                 ]
             },
             {
                 id: 1,
-                text: "Qu'est-ce que vous voulez savoir ?",
+                text: "Je suis Konan, détective privé. Je mène une enquête sur Pauline Geanne.",
                 responses: [
                     {
-                        text: "Quelle était votre relation avec Pauline ?",
-                        next: 2,
-                    },
-                    {
-                        text: "Avez-vous remarqué quelqu'un la suivre ou l'observer ici ?",
-                        action: () => addNote("bar", "Un homme mystérieux suit Pauline"),
+                        text: "(Regard méfiant) Qu'est-ce que vous voulez savoir ?",
                         next: 2,
                     }
                 ]
             },
             {
                 id: 2,
-                text: "Il y avait un type louche qui venait souvent après elle. Grand, manteau sombre. Il ne commandait rien et restait près de la porte.",
+                text: "Quelle était votre relation avec Pauline ?",
                 responses: [
                     {
-                        text: "Merci pour votre temps.",
+                        text: "Elle venait de temps en temps. On discutait, c'est tout.",
+                        next: 2,
+                    }
+                ]
+            },
+            {
+                id: 3,
+                text: "Avez-vous remarqué quelqu'un la suivre ou l'observer ici ?",
+                condition: () => hasNote("cinema", "Un homme mystérieux suit Pauline"),
+                responses: [
+                    {
+                        text: "Il y avait un type louche qui venait souvent après elle. Grand, manteau sombre. Il ne commandait rien et restait près de la porte.",
                         next: null,
                     }
                 ]
@@ -229,7 +247,7 @@ let dialogues = {
                 text: "Bonjour, je suis Konan, détective privé. J'ai des questions sur le meurtre de Pauline Geanne.",
                 responses: [
                     {
-                        text: "Je vous ai déjà dit tout ce que je savais.",
+                        text: "(Fermé) Je n'ai rien à vous dire.",
                         next: 1,
                     }
                 ]
@@ -237,9 +255,10 @@ let dialogues = {
             {
                 id: 1,
                 text: "Vos caméras étaient prétendument en maintenance le soir du meurtre. Pourquoi ?",
+                condition: () => hasNote("cybercafe", "Problème de caméras ..."),
                 responses: [
                     {
-                        text: "Des problèmes techniques. Cela arrive.",
+                        text: "(Pâlit) Des problèmes techniques. Cela arrive.",
                         next: 2,
                     }
                 ]
