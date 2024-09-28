@@ -1,8 +1,11 @@
 document.getElementById('start-button').addEventListener('click', () => {
     // Cacher la page d'ouverture
     document.getElementById('opening-page').style.display = 'none';
+    
+    // Afficher le dialogue d'intro avec le policier
+    startByPolice();
     // Afficher le contenu du jeu
-    document.getElementById('game-content').style.display = 'block';
+    //document.getElementById('game-content').style.display = 'block';
 });
 
 
@@ -19,10 +22,23 @@ function closeCustomAlert() {
 // Déclarations des variables globales
 let gameState = {
     // flags ou notes
+    note: [],
     visitedLocations: {},
     accused: null,
     knownSuspects: [], // Ajouter cette ligne
 };
+
+// Ajoute les notes
+function addNote(Notes) {
+    if (!gameState.knownSuspects.includes(Notes)) {
+        gameState.knownSuspects.push(Notes);
+    }
+}
+
+// Si le detective a les notes
+function hasNote(Notes) {
+    return gameState.knownSuspects.includes(Notes)
+}
 
 // Objets des dialogues et des choix pour chaque lieu
 const dialogues = {
@@ -39,24 +55,75 @@ const dialogues = {
                 ]
             },
             {
-                text: "Quelle était votre relation avec Pauline ?",
-                condition: () => true,
+                text: "Comment allait Pauline ces derniers temps ?",
+                condition: () => true,	
                 responses: [
                     {
-                        text: "Elle venait de temps en temps. On discutait, c'est tout.",
+                        text: "Elle était stressée, mais aussi déterminée. Elle travaillait sur une grande enquête. Elle disait que c'était dangereux, mais qu'elle ne pouvait pas abandonner.",
+                        action: () => addNote("Pauline enquêtait sur une association secrète de censure"),
                         next: 2,
                     }
                 ]
             },
-
+            {
+                text: "Avez-vous remarqué quelque chose d'inhabituel autour d'elle ?",
+                condition: () => true,
+                responses: [
+                    {
+                        text: "Oui, elle se sentait suivie. Elle m'a dit qu'elle voyait souvent le même homme, grand, avec un manteau sombre, près du cinéma.",
+                        action: () => addNote("Un homme mystérieux suit Pauline"),
+                        next: 3,
+                    }
+                ]
+            },
+            {
+                text: "Que pouvez-vous me dire sur Philibert  ?",
+                condition: () => hasNote("Le journaliste rival ?"),
+                responses: [
+                    {
+                        text: "Philibert et Pauline étaient en compétition. Elle pensait qu'il essayait de saboter son enquête. Ils se sont disputés violemment ici, il y a quelques jours.",
+                        action: () => addNote("Pauline soupçonnait Philibert de saboter son travail."),
+                        next: 3,
+                    }
+                ]
+            },
         ],
-        library: {
-            name: "Ingrid",
-            dialogues: [
-                
-            ],
-        },
     },
+
+    library: {
+        name: "Ingrid",
+        dialogues: [
+            
+        ],
+    },
+
+    bar: {
+        name: "Pedro",
+        dialogues: [
+
+        ]
+    },
+
+    hotel: {
+        name: "Polnareff",
+        dialogues: [
+
+        ]
+    },
+
+    cybercafe: {
+        name: "Sophie",
+        dialogues: [
+
+        ]
+    },
+
+    journal: {
+        name: "Philibert",
+        dialogues: [
+            
+        ]
+    }
 };
 
 // Gestionnaire d'événements pour les lieux
@@ -101,8 +168,16 @@ function showDialogue(locationId) {
 
     // Afficher le texte du dialogue
     dialogueContent.innerHTML = `<p><strong>Vous :</strong> ${dialogue.text}</p>`;
+    choices.innerHTML = '';
+    console.log("hello")
+    dialogue.responses.forEach((response, index) => {
+        const button = document.createElement('button');
+        button.innerText = response.text;
+        console.log(response.text)
+    });
 
-}
+    
+};
 
 function closeDialogue() {
     const dialogueBox = document.getElementById('dialogue-box');
@@ -111,7 +186,7 @@ function closeDialogue() {
 
     dialogueContent.innerHTML = '';
     choices.innerHTML = '';
-}
+};
 
 // Fonction pour accuser un suspect
 function accuseSuspect() {
@@ -145,7 +220,8 @@ function checkAccusation(suspect) {
 };
 
 function startByPolice() {
-
+    // Affiche le dialogue d'intro avec le policier
+    document.getElementById('').style.display = 'block';
 };
 
 function showCharacter() {
