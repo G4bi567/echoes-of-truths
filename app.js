@@ -5,6 +5,7 @@ document.getElementById('start-button').addEventListener('click', () => {
     document.getElementById('game-content').style.display = 'block';
 });
 
+
 function showCustomAlert(title, message) {
     document.getElementById('alert-title').innerText = title;
     document.getElementById('alert-message').innerText = message;
@@ -25,7 +26,37 @@ let gameState = {
 
 // Objets des dialogues et des choix pour chaque lieu
 const dialogues = {
+    cinema: {
+        name: "Esmeralda",
+        dialogues: [
+            {
+                text: "Bonjour, Esmeralda ? Je suis Konan, détective privé. Je suis désolé pour votre perte.",
+                responses: [
+                    {
+                        text: "Merci... Pauline était ma meilleure amie. C'est si difficile de croire qu'elle est partie.",
+                        next: 1,
+                    }
+                ]
+            },
+            {
+                text: "Quelle était votre relation avec Pauline ?",
+                condition: () => true,
+                responses: [
+                    {
+                        text: "Elle venait de temps en temps. On discutait, c'est tout.",
+                        next: 2,
+                    }
+                ]
+            },
 
+        ],
+        library: {
+            name: "Ingrid",
+            dialogues: [
+                
+            ],
+        },
+    },
 };
 
 // Gestionnaire d'événements pour les lieux
@@ -44,6 +75,42 @@ locations.forEach(location => {
 
 // Fonction pour démarrer un dialogue
 function startDialogue(locationId) {
+    const location = dialogues[locationId];
+    if (!location) return;
+
+    // Ajouter le suspect à la liste des suspects connus
+    const personDialogue = location.name
+    if (!gameState.knownSuspects.includes(personDialogue)) {
+        gameState.knownSuspects.push(personDialogue);
+    }
+
+    gameState.currentDialogue = location.dialogues[0]
+
+    showDialogue(locationId);
+}
+
+
+function showDialogue(locationId) {
+    const dialogueBox = document.getElementById('dialogue-box');
+    const dialogueContent = document.getElementById('dialogue-content');
+    const choices = document.getElementById('choices');
+
+    const location = dialogues[locationId];
+    const dialogue = gameState.currentDialogue;
+
+
+    // Afficher le texte du dialogue
+    dialogueContent.innerHTML = `<p><strong>Vous :</strong> ${dialogue.text}</p>`;
+
+}
+
+function closeDialogue() {
+    const dialogueBox = document.getElementById('dialogue-box');
+    const dialogueContent = document.getElementById('dialogue-content');
+    const choices = document.getElementById('choices');
+
+    dialogueContent.innerHTML = '';
+    choices.innerHTML = '';
 }
 
 // Fonction pour accuser un suspect
@@ -54,10 +121,12 @@ function accuseSuspect() {
     }
 
     let suspectList = gameState.knownSuspects.join(', ');
-    const suspect = prompt(`Qui voulez-vous accuser ? (${suspectList})`).toLowerCase();
+    const suspect = prompt(`Qui voulez-vous accuser ? (${suspectList})`);
 
-    if (suspect) {
+    if (gameState.knownSuspects.includes(suspect)) {
         checkAccusation(suspect);
+    } else {
+        showCustomAlert("Erreur", "Cet personne n'est pas dans liste.");
     }
 };
 
@@ -73,4 +142,16 @@ function checkAccusation(suspect) {
             window.location.reload();
         }, 3000); // 3000 millisecondes = 3 secondesw
     }
+};
+
+function startByPolice() {
+
+};
+
+function showCharacter() {
+    
+};
+
+function moveCharacter() {
+
 };
