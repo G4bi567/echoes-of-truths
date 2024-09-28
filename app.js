@@ -6,7 +6,7 @@ document.getElementById('start-button').addEventListener('click', () => {
     startByPolice();
     
     // Afficher le contenu du jeu
-    //document.getElementById('game-content').style.display = 'block';
+    document.getElementById('game-content').style.display = 'block';
 });
 
 
@@ -39,16 +39,18 @@ let gameState = {
 };
 
 // Ajoute les notes
-function addNote(Notes) {
-    if (!gameState.knownSuspects.includes(Notes)) {
-        gameState.knownSuspects.push(Notes);
+// Ajoute une note (c'est-à-dire marque un dialogue comme complété) pour une location donnée
+function addNote(locationId, note) {
+    if (!gameState.completedDialogues[locationId].includes(note)) {
+        gameState.completedDialogues[locationId].push(note);
     }
 }
 
-// Si le detective a les notes
-function hasNote(Notes) {
-    return gameState.knownSuspects.includes(Notes)
+// Vérifie si une note (c'est-à-dire un dialogue complété) existe déjà pour une location donnée
+function hasNote(locationId, note) {
+    return gameState.completedDialogues[locationId].includes(note);
 }
+
 
 // Objets des dialogues et des choix pour chaque lieu
 const dialogues = {
@@ -58,7 +60,6 @@ const dialogues = {
             {
                 id: 0,
                 text: "Konan, nous avons besoin de vos talents. Pauline Geanne, une journaliste respectée, a été retrouvée morte à l'hôtel 'Les Étoiles'. Elle travaillait sur une enquête sensible concernant une association secrète de censure. De plus, le cybercafé 'Le Nexus' a été piraté récemment, et nous pensons que c'est lié. Votre mission est de découvrir la vérité et d'identifier le coupable.",
-                condition: () => true,
                 responses: [
                     {
                         text: "Je ferai tout mon possible, commissaire. Par où dois-je commencer ?",
@@ -72,8 +73,8 @@ const dialogues = {
                 condition: () => true,
                 response: [
                     {
-                        text: "",
-                        next: 2,
+                        text: "Entendu ! Je pars sur le champ.",
+                        next: 1,
                     }
                 ]
             }
@@ -197,10 +198,9 @@ function startDialogue(locationId) {
     gameState.currentDialogue = location.dialogues[0]
 
 
-    displayQuestions(locationId);
+    displayDialogues(locationId);
 }
-
-function displayQuestions(locationId) {
+function displayDialogues(locationId) {
     const dialogueBox = document.getElementById('dialogue-box');
     const dialogueContent = document.getElementById('dialogue-content');
     const choices = document.getElementById('choices');
@@ -208,10 +208,9 @@ function displayQuestions(locationId) {
     dialogueContent.innerHTML = '';
     choices.innerHTML = '';
 
-    
-
     const hasAskedInitialQuestion = gameState.completedDialogues[locationId].includes(0);
 
+    // Filter valid dialogues (questions)
     const locationDialogues = dialogues[locationId].dialogues.filter(dialogue => {
         if (!hasAskedInitialQuestion) {
             return dialogue.id === 0;
@@ -228,60 +227,92 @@ function displayQuestions(locationId) {
         return;
     }
 
-    if (locationId == "police") {
-        console.log(dialogues[locationId].dialogue);
+    console.log(locationDialogues);
+
+    // Check if location is 'police' (Gordon starts the conversation)
+    if (locationId === "police") {
+        // Gordon speaks first
         locationDialogues.forEach(dialogue => {
-            console.log(`${dialogue.id}: ${dialogue.text}`);
-            console.log(`Vous: ${dialogue.responses.text}`)
-            const button = document.createElement('button');
-            button.innerText = dialogue.text;
+            dialogueContent.innerHTML = `<p>${dialogues[locationId].name}: ${dialogue.text}</p>`;  // Gordon's dialogue
+
+            // Check if responses exist
+            if (dialogue.responses && dialogue.responses.length > 0) {
+                dialogue.responses.forEach(response => {
+                    const button = document.createElement('button');
+                    button.innerText = response.text;  // Safe access to the first response
+                    button.classList.add('choice-button');
+                    button.addEventListener('click', () => askQuestion(locationId, dialogue.id));
+                    choices.appendChild(button);
+                });
+            } else {
+                dialogueContent.innerHTML = `<p>La conversation est terminée avec ${dialogues[locationId].name}.</p>`;
+                const endButton = document.createElement('button');
+                endButton.innerText = "Terminer la conversation";
+                endButton.addEventListener('click', closeDialogue);
+                choices.appendChild(endButton);
+                return;
+            }
         });
-    }
-    else {
+    } else {
+        // For other locations, the detective starts speaking
         dialogueContent.innerHTML = `<p>Choisissez une question à poser à ${dialogues[locationId].name} :</p>`;
 
-        console.log(`Choisissez une question à poser à ${dialogues[locationId].name}:`);
         locationDialogues.forEach(dialogue => {
-            console.log(`${dialogue.id}: ${dialogue.text}`);
             const button = document.createElement('button');
-            button.innerText = dialogue.text;
+            button.innerText = dialogue.text;  // The detective's questions
+            button.classList.add('choice-button');
+            button.addEventListener('click', () => askQuestion(locationId, dialogue.id));
+            choices.appendChild(button);
         });
-        console.log("99: Terminer la conversation");
     }
 }
 
-function askQuestion(location, id) {
-    
-}
 
-function showDialogue(locationId) {
+function askQuestion(locationId, dialogueId) {
+    console.log("q")
     const dialogueBox = document.getElementById('dialogue-box');
     const dialogueContent = document.getElementById('dialogue-content');
     const choices = document.getElementById('choices');
 
     const location = dialogues[locationId];
-    const dialogue = gameState.currentDialogue;
+    const dialogue = location.dialogues.find(d => d.id === dialogueId);
 
-
-    // Afficher le texte du dialogue
-    if (location = "police") {
-        dialogueContent.innerHTML = `<p><strong>Gordon :</strong> ${dialogue.text}</p>`;
-    } else if (location = "cinema") {
-        dialogueContent.innerHTML = `<p><strong>Esmeralda :</strong> ${dialogue.text}</p>`;
+    if (!dialogue) {
+        showCustomAlert("Erreur", "Cette question n'existe pas.");
+        return;
     }
-    else {
-        dialogueContent.innerHTML = `<p><strong>Vous :</strong> ${dialogue.text}</p>`;
-    }    
+
+    if (!gameState.completedDialogues[locationId].includes(dialogueId)) {
+    gameState.completedDialogues[locationId].push(dialogueId);
+    }
+
+
+    // Afficher le dialogue et la réponse
+    dialogueContent.innerHTML = `<p><strong>Vous :</strong> ${dialogue.text}</p>`;
+    if (dialogue.responses && dialogue.responses.length > 0) {
+        dialogue.responses.forEach(response => {
+            dialogueContent.innerHTML += `<p><strong>${dialogues[locationId].name} :</strong> ${response.text}</p>`;
+
+            // Exécuter l'action associée, s'il y en a une
+            if (response.action) {
+                response.action();
+            }
+        });
+    }
+
+    // Mettre à jour les choix
     choices.innerHTML = '';
-    console.log("hello")
-    dialogue.responses.forEach((response, index) => {
-        const button = document.createElement('button');
-        button.innerText = response.text;
-        console.log(response.text)
-    });
+
+    const continueButton = document.createElement('button');
+    continueButton.innerText = "Continuer la conversation";
+    continueButton.classList.add('choice-button');
+    continueButton.addEventListener('click', () => displayDialogues(locationId)); // Re-displays available questions
+    choices.appendChild(continueButton);
+
 
     
 };
+
 
 function closeDialogue() {
     const dialogueBox = document.getElementById('dialogue-box');
@@ -325,7 +356,8 @@ function checkAccusation(suspect) {
 
 function startByPolice() {
     // Affiche le dialogue d'intro avec le policier
-    displayQuestions("police");
+    displayDialogues("police");
+    
 };
 
 function showCharacter() {
