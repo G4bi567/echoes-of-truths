@@ -46,7 +46,17 @@ function hasNote(Notes) {
 // Objets des dialogues et des choix pour chaque lieu
 const dialogues = {
     police: {
-        
+        name: "Gordon",
+        dialogues: [
+            {
+                id: 0,
+                text: "",
+                condition: () => true,
+                responses: [
+                    {}
+                ]
+            }
+        ]
     },
     
     cinema: {
