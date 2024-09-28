@@ -70,3 +70,107 @@
     z-index: 1; /* Keeps content above the background */
 }
 
+/* Dialogue Box Styling */
+#dialogue-box {
+    position: fixed; /* Stay fixed at the bottom */
+    bottom: 0; /* Align to the bottom of the screen */
+    left: 50%; /* Start positioning from the center */
+    transform: translateX(-50%); /* Center the dialogue box horizontally */
+    width: 80%; /* Make it take up 80% of the screen width */
+    max-width: 1200px; /* Set a maximum width */
+    background: rgba(0, 0, 0, 0.8); /* Dark semi-transparent background */
+    color: white; /* Text color */
+    padding: 20px; /* Add some padding */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Add a slight shadow */
+    z-index: 2; /* Ensure it's on top of everything */
+    font-size: 18px; /* Font size for readability */
+}
+
+/* Dialogue Content */
+#dialogue-content {
+    margin-bottom: 10px; /* Space between content and choices */
+}
+
+/* Button Styling for Choices */
+.choice-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin: 5px; /* Add spacing between buttons */
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.choice-button:hover {
+    background-color: #0056b3;
+}
+
+/* Ensure the game content's height takes up the whole screen */
+#game-content {
+    height: 100vh; /* Full viewport height */
+}
+/* Main Menu Styling */
+#opening-page {
+    position: fixed;
+    bottom: 10%; /* Position at the bottom of the page */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for perfect horizontal centering */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10; /* Ensure it's on top of background */
+    color: white; /* Text color */
+    text-align: center; /* Align text */
+    font-family: 'Courier New', Courier, monospace; /* Mystery theme font */
+}
+
+#opening-page p {
+    font-size: 20px; /* Text size */
+    margin-bottom: 20px; /* Space between text and button */
+    max-width: 800px; /* Limit the paragraph width */
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent background for noir effect */
+    border-radius: 10px;
+}
+
+#start-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    font-family: 'Courier New', Courier, monospace; /* Noir style font */
+    background-color: rgba(55, 50, 50, 0.5); /* Semi-transparent button background */
+    color: white;
+    border: 2px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+}
+
+#start-button:hover {
+    background-color: rgba(255, 255, 255, 0.4); /* Slightly lighter on hover */
+    transform: scale(1.05); /* Slight scaling for effect */
+}
+
+/* Center the text */
+#opening-page h1 {
+    font-size: 32px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Noir-style shadow */
+    margin-bottom: 20px;
+}
+
+/* Add a noir-style text shadow */
+#opening-page p, #start-button {
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Noir style shadow effect */
+}
+
+.exclamation-mark {
+    color: red;
+    font-weight: bold;
+    font-size: 24px;
+    margin-left: 10px; /* Space between the location name and the ! */ 
+}
