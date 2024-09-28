@@ -52,9 +52,7 @@ const dialogues = {
                 id: 0,
                 text: "",
                 condition: () => true,
-                responses: [
-                    {}
-                ]
+                responses: []
             }
         ]
     },
@@ -161,6 +159,7 @@ locations.forEach(location => {
     });
 });
 
+
 // Fonction pour démarrer un dialogue
 function startDialogue(locationId) {
     const location = dialogues[locationId];
@@ -177,7 +176,20 @@ function startDialogue(locationId) {
     showDialogue(locationId);
 }
 
+function displayQuestions() {
+    const availableDialogues = dialogues.cinema.dialogues.filter(dialogue => !completedDialogues.includes(dialogue.id));
 
+    if (availableDialogues.length === 0) {
+        console.log("La conversation est terminée.");
+        return;
+    }
+
+    console.log("Choisissez une question à poser :");
+    availableDialogues.forEach(dialogue => {
+        console.log(`${dialogue.id}: ${dialogue.text}`);
+    });
+    console.log("99: Terminer la conversation");
+}
 
 function showDialogue(locationId) {
     const dialogueBox = document.getElementById('dialogue-box');
