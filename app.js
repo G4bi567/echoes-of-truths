@@ -190,7 +190,10 @@ function startDialogue(locationId) {
 
     // Ajouter le suspect à la liste des suspects connus
     const personDialogue = location.name
-    if (!gameState.knownSuspects.includes(personDialogue)) {
+    if (personDialogue == "Gordon") {
+
+    }
+    else if (!gameState.knownSuspects.includes(personDialogue) && personDialogue != "Gordon") {
         gameState.knownSuspects.push(personDialogue);
     }
 
@@ -200,19 +203,30 @@ function startDialogue(locationId) {
     displayQuestions(locationId);
 }
 
+
 function displayQuestions(locationId) {
-    console.log(gameState.completedDialogues)
-    console.log(!gameState.completedDialogues)
+
+
+    const hasAskedInitialQuestion = gameState.completedDialogues[location].includes(0);
+
+    const locationDialogues = dialogues[location].dialogues.filter(dialogue => {
+        // If the initial question hasn't been asked, only show the id: 0 question
+        if (!hasAskedInitialQuestion) {
+            return dialogue.id === 0;
+        }
+        // Otherwise, show all available dialogues that haven't been completed
+        return !gameState.completedDialogues[location].includes(dialogue.id) && (!dialogue.condition || dialogue.condition());
+    });
     const availableDialogues = dialogues[locationId].dialogues.filter(dialogue => !gameState.completedDialogues[locationId].includes(dialogue.id));
 
-    if (availableDialogues.length === 0) {
-        console.log("La conversation est terminée. Revenez plus tard.");
-        closeDialogue()
+
+    if (locationDialogues.length === 0) {
+        console.log(`La conversation est terminée avec ${dialogues[location].name}.`);
         return;
     }
 
-    console.log("Choisissez une question à poser :");
-    availableDialogues.forEach(dialogue => {
+    console.log(`Choisissez une question à poser à ${dialogues[location].name}:`);
+    locationDialogues.forEach(dialogue => {
         console.log(`${dialogue.id}: ${dialogue.text}`);
     });
     console.log("99: Terminer la conversation");
@@ -282,6 +296,7 @@ function checkAccusation(suspect) {
 
 function startByPolice() {
     // Affiche le dialogue d'intro avec le policier
+    
 };
 
 function showCharacter() {
