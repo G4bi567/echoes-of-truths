@@ -26,6 +26,9 @@ let gameState = {
     visitedLocations: {},
     accused: null,
     knownSuspects: [], // Ajouter cette ligne
+    completedDialogues: {
+        cinema: [],
+    }
 };
 
 // Ajoute les notes
@@ -42,10 +45,15 @@ function hasNote(Notes) {
 
 // Objets des dialogues et des choix pour chaque lieu
 const dialogues = {
+    police: {
+        
+    },
+    
     cinema: {
         name: "Esmeralda",
         dialogues: [
-            {
+            {   
+                id: 0,
                 text: "Bonjour, Esmeralda ? Je suis Konan, détective privé. Je suis désolé pour votre perte.",
                 responses: [
                     {
@@ -54,7 +62,8 @@ const dialogues = {
                     }
                 ]
             },
-            {
+            {   
+                id:1,
                 text: "Comment allait Pauline ces derniers temps ?",
                 condition: () => true,	
                 responses: [
@@ -65,7 +74,8 @@ const dialogues = {
                     }
                 ]
             },
-            {
+            {   
+                id: 2,
                 text: "Avez-vous remarqué quelque chose d'inhabituel autour d'elle ?",
                 condition: () => true,
                 responses: [
@@ -76,7 +86,8 @@ const dialogues = {
                     }
                 ]
             },
-            {
+            {   
+                id: 3,
                 text: "Que pouvez-vous me dire sur Philibert  ?",
                 condition: () => hasNote("Le journaliste rival ?"),
                 responses: [
@@ -155,6 +166,7 @@ function startDialogue(locationId) {
 
     showDialogue(locationId);
 }
+
 
 
 function showDialogue(locationId) {
