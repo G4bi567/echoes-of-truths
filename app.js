@@ -3,9 +3,10 @@ document.getElementById('start-button').addEventListener('click', () => {
     document.getElementById('opening-page').style.display = 'none';
     
     // Afficher le dialogue d'intro avec le policier
-    startByPolice();
+    //startByPolice();
+    
     // Afficher le contenu du jeu
-    //document.getElementById('game-content').style.display = 'block';
+    document.getElementById('game-content').style.display = 'block';
 });
 
 
@@ -27,7 +28,13 @@ let gameState = {
     accused: null,
     knownSuspects: [], // Ajouter cette ligne
     completedDialogues: {
+        police: [],
         cinema: [],
+        library: [],
+        bar: [],
+        hotel: [],
+        cybercafe: [],
+        journal: []
     }
 };
 
@@ -54,8 +61,19 @@ const dialogues = {
                 condition: () => true,
                 responses: [
                     {
-                        text: "",
+                        text: "Je ferai tout mon possible, commissaire. Par où dois-je commencer ?",
                         next: 1,
+                    }
+                ]
+            },
+            {
+                id: 1,
+                text: "Parlez aux personnes proches de Pauline. Peut-être que sa meilleure amie Esmeralda au cinéma 'Le Lumière' pourra vous aider.",
+                condition: () => true,
+                response: [
+                    {
+                        text: "",
+                        next: 2,
                     }
                 ]
             }
@@ -178,14 +196,18 @@ function startDialogue(locationId) {
 
     gameState.currentDialogue = location.dialogues[0]
 
-    showDialogue(locationId);
+
+    displayQuestions(locationId);
 }
 
 function displayQuestions(locationId) {
-    const availableDialogues = dialogues[locationId].dialogues.filter(dialogue => !completedDialogues.includes(dialogue.id));
+    console.log(gameState.completedDialogues)
+    console.log(!gameState.completedDialogues)
+    const availableDialogues = dialogues[locationId].dialogues.filter(dialogue => !gameState.completedDialogues[locationId].includes(dialogue.id));
 
     if (availableDialogues.length === 0) {
-        console.log("La conversation est terminée.");
+        console.log("La conversation est terminée. Revenez plus tard.");
+        closeDialogue()
         return;
     }
 
@@ -260,7 +282,6 @@ function checkAccusation(suspect) {
 
 function startByPolice() {
     // Affiche le dialogue d'intro avec le policier
-    document.getElementById('').style.display = 'block';
 };
 
 function showCharacter() {
