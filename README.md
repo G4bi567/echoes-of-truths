@@ -1,5 +1,5 @@
 
-# The Echoes of Truths
+# Echoes of Truths
 
 Développé dans le cadre d’un **game jam** de 24 heures, co-organisé par l'Initiative pour l'Innovation des Médias (IMI) et InForm, le jeu aborde des sujets contemporains tels que :
 
