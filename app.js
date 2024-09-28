@@ -1,3 +1,27 @@
+document.addEventListener('DOMContentLoaded', function () {
+    const audioElement = document.getElementById('audio');
+
+    // Function to play the audio
+    function playAudio() {
+        if (audioElement) {
+            audioElement.play().then(() => {
+                console.log('Music started after reload.');
+            }).catch(error => {
+                console.log('Autoplay was blocked, waiting for user interaction.');
+                // If autoplay is blocked, wait for user interaction
+                window.addEventListener('click', function startMusic() {
+                    audioElement.play();
+                    window.removeEventListener('click', startMusic);
+                });
+            });
+        } else {
+            console.error('Audio element not found.');
+        }
+    }
+
+    // Call playAudio after page load
+    playAudio();
+});
 document.getElementById('start-button').addEventListener('click', () => {
 
     // Ensure the audio element is loaded and ready before trying to control it
@@ -178,7 +202,6 @@ let dialogues = {
                 responses: [
                     {
                         text: "Philibert et Pauline étaient en compétition. Elle pensait qu'il essayait de saboter son enquête. Ils se sont disputés violemment ici, il y a quelques jours.",
-                        action: () => addNote("cinema", "Pauline soupçonnait Philibert de saboter son travail."),
                         next: null,
                     }
                 ]
@@ -303,11 +326,9 @@ let dialogues = {
             {
                 id: 1,
                 text: "Vos caméras étaient prétendument en maintenance le soir du meurtre. Pourquoi ?",
-                condition: () => hasNote("cybercafe", "Problème de caméras ..."),
                 responses: [
                     {
                         text: "(Pâlit) Des problèmes techniques. Cela arrive.",
-                        action: () => addNote("hotel", "Polnareff est nerveux."),
                         next: 2,
                     }
                 ]
@@ -315,10 +336,11 @@ let dialogues = {
             {
                 id: 2,
                 text: "Cachez-vous des activités illégales à l'hôtel ?",
-                condition: () => hasNote("hotel", "Polnareff est nerveux."),
+                condition: () => true,
                 responses: [
                     {
                         text: "(Nerveux) C'est ridicule. Mon hôtel est un établissement respectable.",
+                        action: () => addNote("hotel", "Polnareff nerveux"),
                         next: 3,
                     }
                 ]
@@ -326,7 +348,7 @@ let dialogues = {
             {
                 id: 3,
                 text: "Connaissez-vous l'association de censure ?",
-                condition: () => true,
+                condition: () => hasNote("hotel", "Polnareff nerveux"),
                 responses: [
                     {
                         text: "(Déserpéré) Très bien. J'ai des clients qui exigent la discrétion. Je ne pouvais pas me permettre que leurs activités soient exposées.",
@@ -396,7 +418,7 @@ let dialogues = {
                 condition: () => true,
                 responses: [
                     {
-                        text: "Je mène une enquête sur Pauline Geanne.",
+                        text: "Je me demandais quand vous viendriez me voir.",
                         next: 1,
                     }
                 ]
@@ -514,6 +536,7 @@ function displayDialogues(locationId) {
         const endButton = document.createElement('button');
         endButton.innerText = "Terminer la conversation";
         endButton.addEventListener('click', closeDialogue);
+        endButton.classList.add('choice-button');
         choices.appendChild(endButton);
         return;
     }
