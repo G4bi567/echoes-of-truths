@@ -38,24 +38,22 @@ let gameState = {
     }
 };
 
-// Ajoute les notes
 // Ajoute une note (c'est-à-dire marque un dialogue comme complété) pour une location donnée
 function addNote(locationId, note) {
-    if (!gameState.completedDialogues[locationId].includes(note)) {
-        gameState.completedDialogues[locationId].push(note);
+    if (!gameState.note.includes(note)) {
+        gameState.note.push(note);
     }
 }
 
-// Vérifie si une note (c'est-à-dire un dialogue complété) existe déjà pour une location donnée
 function hasNote(locationId, note) {
-    return gameState.completedDialogues[locationId].includes(note);
+    return gameState.note.includes(note); // This checks if the note exists in the notes array, not completedDialogues
 }
 
 
 // Objets des dialogues et des choix pour chaque lieu
-const dialogues = {
+let dialogues = { 
     police: {
-        name: "Gordon",
+        name: "Commissaire Gordon",
         dialogues: [
             {
                 id: 0,
@@ -70,11 +68,10 @@ const dialogues = {
             {
                 id: 1,
                 text: "Parlez aux personnes proches de Pauline. Peut-être que sa meilleure amie Esmeralda au cinéma 'Le Lumière' pourra vous aider.",
-                condition: () => true,
-                response: [
+                responses: [
                     {
                         text: "Entendu ! Je pars sur le champ.",
-                        next: 1,
+                        next: null,
                     }
                 ]
             }
@@ -89,19 +86,19 @@ const dialogues = {
                 text: "Bonjour, Esmeralda ? Je suis Konan, détective privé. Je suis désolé pour votre perte.",
                 responses: [
                     {
-                        text: "Merci... Pauline était ma meilleure amie. C'est si difficile de croire qu'elle est partie.",
+                        text: "(Déprimée) Merci... Pauline était ma meilleure amie. C'est si difficile de croire qu'elle est partie.",
                         next: 1,
                     }
                 ]
             },
             {   
-                id:1,
+                id: 1,
                 text: "Comment allait Pauline ces derniers temps ?",
                 condition: () => true,	
                 responses: [
                     {
                         text: "Elle était stressée, mais aussi déterminée. Elle travaillait sur une grande enquête. Elle disait que c'était dangereux, mais qu'elle ne pouvait pas abandonner.",
-                        action: () => addNote("Pauline enquêtait sur une association secrète de censure"),
+                        action: () => addNote("cinema", "Pauline enquêtait sur une association secrète de censure"),
                         next: 2,
                     }
                 ]
@@ -113,61 +110,238 @@ const dialogues = {
                 responses: [
                     {
                         text: "Oui, elle se sentait suivie. Elle m'a dit qu'elle voyait souvent le même homme, grand, avec un manteau sombre, près du cinéma.",
-                        action: () => addNote("Un homme mystérieux suit Pauline"),
+                        action: () => addNote("cinema", "Un homme mystérieux suit Pauline"),
                         next: 3,
                     }
                 ]
             },
             {   
                 id: 3,
-                text: "Que pouvez-vous me dire sur Philibert  ?",
-                condition: () => hasNote("Le journaliste rival ?"),
+                text: "Que pouvez-vous me dire sur Philibert ?",
+                condition: () => hasNote("cinema", "Le journaliste rival ?"),
                 responses: [
                     {
                         text: "Philibert et Pauline étaient en compétition. Elle pensait qu'il essayait de saboter son enquête. Ils se sont disputés violemment ici, il y a quelques jours.",
-                        action: () => addNote("Pauline soupçonnait Philibert de saboter son travail."),
-                        next: 3,
+                        action: () => addNote("cinema", "Pauline soupçonnait Philibert de saboter son travail."),
+                        next: null,
                     }
                 ]
-            },
-        ],
+            }
+        ]
     },
 
     library: {
         name: "Ingrid",
         dialogues: [
-            
-        ],
+            {
+                id: 0,
+                text: "Bonjour, Ingrid ? Je suis Konan, détective privé. J'ai des questions sur Pauline Geanne.",
+                responses: [
+                    {
+                        text: "Je suis désolée pour ce qui lui est arrivé. Comment puis-je vous aider ?",
+                        next: 1,
+                    }
+                ]
+            },
+            {
+                id: 1,
+                text: "Que savez-vous de l'association de censure dont Pauline enquêtait ?",
+                responses: [
+                    {
+                        text: "Je ne suis pas au courant de telles choses.",
+                        next: 2,
+                    }
+                ]
+            },
+            {
+                id: 2,
+                text: "Pauline fréquentait-elle votre librairie ?",
+                responses: [
+                    {
+                        text: "Oui, elle aimait nos ouvrages rares. Nous avions des discussions intéressantes.",
+                        next: 3,
+                    }
+                ]
+            },
+            {
+                id: 3,
+                text: "Avez-vous remarqué quelqu'un la suivre ou s'intéresser à elle ici ?",
+                responses: [
+                    {
+                        text: "Non, je n'ai rien remarqué de tel.",
+                        next: null,
+                    }
+                ]
+            }
+        ]
     },
 
     bar: {
         name: "Pedro",
         dialogues: [
-
+            {
+                id: 0,
+                text: "Bonjour, que puis-je vous servir ?",
+                responses: [
+                    {
+                        text: "Un café, s'il vous plaît.",
+                        next: 1,
+                    },
+                    {
+                        text: "Pedro ? Je suis Konan, détective privé. J'ai quelques questions sur Pauline Geanne.",
+                        next: 1,
+                    }
+                ]
+            },
+            {
+                id: 1,
+                text: "Qu'est-ce que vous voulez savoir ?",
+                responses: [
+                    {
+                        text: "Quelle était votre relation avec Pauline ?",
+                        next: 2,
+                    },
+                    {
+                        text: "Avez-vous remarqué quelqu'un la suivre ou l'observer ici ?",
+                        action: () => addNote("bar", "Un homme mystérieux suit Pauline"),
+                        next: 2,
+                    }
+                ]
+            },
+            {
+                id: 2,
+                text: "Il y avait un type louche qui venait souvent après elle. Grand, manteau sombre. Il ne commandait rien et restait près de la porte.",
+                responses: [
+                    {
+                        text: "Merci pour votre temps.",
+                        next: null,
+                    }
+                ]
+            }
         ]
     },
 
     hotel: {
         name: "Polnareff",
         dialogues: [
-
+            {
+                id: 0,
+                text: "Bonjour, je suis Konan, détective privé. J'ai des questions sur le meurtre de Pauline Geanne.",
+                responses: [
+                    {
+                        text: "Je vous ai déjà dit tout ce que je savais.",
+                        next: 1,
+                    }
+                ]
+            },
+            {
+                id: 1,
+                text: "Vos caméras étaient prétendument en maintenance le soir du meurtre. Pourquoi ?",
+                responses: [
+                    {
+                        text: "Des problèmes techniques. Cela arrive.",
+                        next: 2,
+                    }
+                ]
+            },
+            {
+                id: 2,
+                text: "Cachez-vous des activités illégales à l'hôtel ?",
+                responses: [
+                    {
+                        text: "C'est ridicule. Mon hôtel est un établissement respectable.",
+                        next: null,
+                    }
+                ]
+            }
         ]
     },
 
     cybercafe: {
         name: "Sophie",
         dialogues: [
-
+            {
+                id: 0,
+                text: "Bonjour, Sophie ? Je suis Konan, détective privé. Je mène une enquête sur Pauline Geanne.",
+                responses: [
+                    {
+                        text: "Oui, j'ai entendu parler de ce qui lui est arrivé. C'est terrible.",
+                        next: 1,
+                    }
+                ]
+            },
+            {
+                id: 1,
+                text: "Votre cybercafé a été piraté récemment. Pouvez-vous m'en dire plus ?",
+                responses: [
+                    {
+                        text: "Oui, c'était une intrusion sophistiquée. Ils ont accédé à nos serveurs et volé des données.",
+                        next: 2,
+                    }
+                ]
+            },
+            {
+                id: 2,
+                text: "Pauline utilisait-elle vos services ?",
+                responses: [
+                    {
+                        text: "Oui, elle venait souvent pour ses recherches.",
+                        next: 3,
+                    }
+                ]
+            },
+            {
+                id: 3,
+                text: "Avez-vous remarqué quelqu'un de suspect récemment ?",
+                condition: () => hasNote("cybercafe", "Un homme mystérieux a été vu au cybercafé"),
+                responses: [
+                    {
+                        text: "Il y avait un homme qui venait souvent, sans utiliser les ordinateurs. Grand, manteau sombre. Il semblait observer les clients.",
+                        next: null,
+                    }
+                ]
+            }
         ]
     },
 
     journal: {
         name: "Philibert",
         dialogues: [
-            
+            {
+                id: 0,
+                text: "Bonjour, vous devez être Philibert. Je suis Konan, détective privé.",
+                responses: [
+                    {
+                        text: "Je mène une enquête sur Pauline Geanne.",
+                        next: 1,
+                    }
+                ]
+            },
+            {
+                id: 1,
+                text: "J'ai appris que vous vous êtes disputé avec Pauline au café 'Le Port'.",
+                responses: [
+                    {
+                        text: "Qui vous a dit ça ? Ce n'était rien de sérieux.",
+                        next: 2,
+                        action: () => addNote("journal", "Le journaliste rival ?"),
+                    }
+                ]
+            },
+            {
+                id: 2,
+                text: "Pauline vous accusait de saboter son enquête. Que répondez-vous à cela ?",
+                responses: [
+                    {
+                        text: "Elle était paranoïaque. Je ne ferais jamais ça.",
+                        next: null,
+                    }
+                ]
+            }
         ]
     }
 };
+
 
 // Gestionnaire d'événements pour les lieux
 const locations = document.querySelectorAll('.location');
@@ -186,7 +360,7 @@ locations.forEach(location => {
 
 // Fonction pour démarrer un dialogue
 function startDialogue(locationId) {
-    const location = dialogues[locationId];
+    let location = dialogues[locationId];
     if (!location) return;
 
     // Ajouter le suspect à la liste des suspects connus
@@ -211,7 +385,7 @@ function displayDialogues(locationId) {
     const hasAskedInitialQuestion = gameState.completedDialogues[locationId].includes(0);
 
     // Filter valid dialogues (questions)
-    const locationDialogues = dialogues[locationId].dialogues.filter(dialogue => {
+    let locationDialogues = dialogues[locationId].dialogues.filter(dialogue => {
         if (!hasAskedInitialQuestion) {
             return dialogue.id === 0;
         }
@@ -233,7 +407,7 @@ function displayDialogues(locationId) {
     if (locationId === "police") {
         // Gordon speaks first
         locationDialogues.forEach(dialogue => {
-            dialogueContent.innerHTML = `<p>${dialogues[locationId].name}: ${dialogue.text}</p>`;  // Gordon's dialogue
+            dialogueContent.innerHTML = `<p><strong>${dialogues[locationId].name}:</strong> ${dialogue.text}</p>`;  // Gordon's dialogue
 
             // Check if responses exist
             if (dialogue.responses && dialogue.responses.length > 0) {
@@ -274,8 +448,8 @@ function askQuestion(locationId, dialogueId) {
     const dialogueContent = document.getElementById('dialogue-content');
     const choices = document.getElementById('choices');
 
-    const location = dialogues[locationId];
-    const dialogue = location.dialogues.find(d => d.id === dialogueId);
+    let location = dialogues[locationId];
+    let dialogue = location.dialogues.find(d => d.id === dialogueId);
 
     if (!dialogue) {
         showCustomAlert("Erreur", "Cette question n'existe pas.");
@@ -287,11 +461,18 @@ function askQuestion(locationId, dialogueId) {
     }
 
 
+
     // Afficher le dialogue et la réponse
-    dialogueContent.innerHTML = `<p><strong>Vous :</strong> ${dialogue.text}</p>`;
+    let speaker1 = "Vous"
+    let speaker2 = dialogues[locationId].name
+    if (locationId == "police") {
+        speaker2 = speaker1
+        speaker1 = "Gordon"
+    }
+    dialogueContent.innerHTML = `<p><strong>${speaker1} :</strong> ${dialogue.text}</p>`;
     if (dialogue.responses && dialogue.responses.length > 0) {
         dialogue.responses.forEach(response => {
-            dialogueContent.innerHTML += `<p><strong>${dialogues[locationId].name} :</strong> ${response.text}</p>`;
+            dialogueContent.innerHTML += `<p><strong>${speaker2} :</strong> ${response.text}</p>`;
 
             // Exécuter l'action associée, s'il y en a une
             if (response.action) {
@@ -303,14 +484,21 @@ function askQuestion(locationId, dialogueId) {
     // Mettre à jour les choix
     choices.innerHTML = '';
 
-    const continueButton = document.createElement('button');
-    continueButton.innerText = "Continuer la conversation";
-    continueButton.classList.add('choice-button');
-    continueButton.addEventListener('click', () => displayDialogues(locationId)); // Re-displays available questions
-    choices.appendChild(continueButton);
+    // Continue the conversation or end it
+    if (dialogue.next === -1) {
+        const endButton = document.createElement('button');
+        endButton.innerText = "Terminer la conversation";
+        endButton.classList.add('choice-button');
+        endButton.addEventListener('click', closeDialogue);
+        choices.appendChild(endButton);
+    } else {
+        const continueButton = document.createElement('button');
+        continueButton.innerText = "Continuer la conversation";
+        continueButton.classList.add('choice-button');
+        continueButton.addEventListener('click', () => displayDialogues(locationId)); 
+        choices.appendChild(continueButton);
+    }
 
-
-    
 };
 
 
@@ -342,16 +530,16 @@ function accuseSuspect() {
 
 // Fonction pour vérifier si l'accusation est correcte
 function checkAccusation(suspect) {
-    const culprit = 'choisie';
+    const culprit = 'Ingrid';
     if (suspect === culprit) {
-        alert("Félicitations ! Vous avez trouvé le véritable coupable : .");
+        alert("Félicitations ! Vous avez trouvé le véritable coupable.");
     } else {
         alert("Désolé, ce n'est pas le bon coupable. Vous êtes un mauvais détective.");
         // Recharger la page pour réinitialiser le jeu
-        setTimeout(function() {
-            window.location.reload();
-        }, 3000); // 3000 millisecondes = 3 secondesw
     }
+    setTimeout(function() {
+        window.location.reload();
+    }, 3000); // 3000 millisecondes = 3 secondesw
 };
 
 function startByPolice() {
